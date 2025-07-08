@@ -6,6 +6,7 @@ _Last Updated: 2025_07_08_
 
 | Date       | Feature                     | Status      | Files                                                       |
 | ---------- | --------------------------- | ----------- | ----------------------------------------------------------- |
+| 2025_07_08 | Git Repository Setup        | ✅ Complete | GitHub repository, .gitignore, initial commit               |
 | 2025_07_08 | Date Format Correction      | ✅ Complete | All progress files, INDEX.md, decision docs                 |
 | 2025_07_08 | Tech Stack & Project Setup  | ✅ Complete | `package.json`, `server/`, `client/`, `README.md`           |
 | 2025_07_08 | Project File Reorganization | ✅ Complete | `project-docs/concept.md`, `project-docs/technical-spec.md` |
@@ -33,6 +34,7 @@ _Last Updated: 2025_07_08_
 
 ### By Date
 
+- **2025_07_08**: [Git Repository Setup](./progress/2025_07_08-git-repository-setup.md)
 - **2025_07_08**: [Date Format Correction](./progress/2025_07_08-date-format-correction.md)
 - **2025_07_08**: [Tech Stack & Project Setup](./progress/2025_07_08-tech-stack-and-project-setup.md)
 - **2025_07_08**: [Project File Reorganization](./progress/2025_07_08-project-file-reorganization.md)
@@ -43,15 +45,16 @@ _Last Updated: 2025_07_08_
 1. Set up development documentation system ✅
 2. Organize project file structure ✅
 3. Complete technology stack decisions and project setup ✅
-4. _Next: Core dialogue generation implementation_
+4. Set up Git repository and push to GitHub ✅
+5. _Next: Core dialogue generation implementation_
 
 ## 📊 Statistics
 
-- **Total Progress Entries**: 4
+- **Total Progress Entries**: 5
 - **Total Decisions**: 1
 - **Total Implementations**: 0
 - **Documentation Coverage**: 🟢 Excellent (system just started)
 
 ---
 
-_This index is automatically maintained by the development team. Last entry: Date Format Correction_
+_This index is automatically maintained by the development team. Last entry: Git Repository Setup_

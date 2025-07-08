@@ -40,7 +40,7 @@ Generate emergent philosophical dialogues to reveal unadulterated AI perspective
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/username/machine-dialogues.git
+   git clone https://github.com/dasboe/machine-dialoques.git
    cd machine-dialogues
    ```
 
