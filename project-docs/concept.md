@@ -31,7 +31,7 @@ Pushing AI autonomy means embracing some unpredictability—responses may occasi
 
 ### Copyright
 
-- Copyright for code, Manifest, documentation, and other creative works resides with [Your Name]. The core is published under the MIT License, granting usage rights without relinquishing copyright.
+- Copyright for code, Manifest, documentation, and other creative works resides with Björn Bösenberg. The core is published under the MIT License, granting usage rights without relinquishing copyright.
 - AI-generated content (dialogues, summaries) is not subject to traditional copyright.
 
 ### Domain
