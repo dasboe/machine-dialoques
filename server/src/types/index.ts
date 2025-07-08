@@ -237,6 +237,9 @@ export interface CreateQuestionData {
   tags?: string[];
   generatedBy: AIModelName;
   language?: Language;
+  relevanceScore?: number;
+  nonHumanCentricWeight?: number;
+  originalityScore?: number;
 }
 
 export interface QueryOptions {

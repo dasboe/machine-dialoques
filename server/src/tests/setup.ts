@@ -18,7 +18,18 @@ beforeAll(async () => {
     const uri = mongod.getUri();
     
     // Connect mongoose to the in-memory database
-    await mongoose.connect(uri);
+    await mongoose.connect(uri, {
+      serverSelectionTimeoutMS: 30000, // 30 seconds timeout
+      socketTimeoutMS: 30000,
+      connectTimeoutMS: 30000,
+      maxPoolSize: 1, // Single connection for tests
+      minPoolSize: 1
+    });
+    
+    // Wait for connection to be ready
+    if (mongoose.connection.db) {
+      await mongoose.connection.db.admin().ping();
+    }
     
     // Silence logger during tests
     logger.silent = true;
@@ -28,24 +39,28 @@ beforeAll(async () => {
     console.error('❌ Failed to setup test database:', error);
     throw error;
   }
-});
+}, 60000); // 60 second timeout for setup
 
 // Global test teardown
 afterAll(async () => {
   try {
     // Close mongoose connection
-    await mongoose.connection.dropDatabase();
-    await mongoose.connection.close();
+    if (mongoose.connection.readyState !== 0) {
+      await mongoose.connection.dropDatabase();
+      await mongoose.connection.close();
+    }
     
     // Stop the in-memory MongoDB instance
-    await mongod.stop();
+    if (mongod) {
+      await mongod.stop();
+    }
     
     console.log('🧹 Test database cleaned up successfully');
   } catch (error) {
     console.error('❌ Failed to cleanup test database:', error);
     throw error;
   }
-});
+}, 30000); // 30 second timeout for cleanup
 
 // Clean up between tests
 afterEach(async () => {

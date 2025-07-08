@@ -200,9 +200,15 @@ questionSchema.methods.addRejection = function(model: AIModelName) {
 };
 
 questionSchema.methods.markAsUsed = function() {
-  this.lastUsed = new Date();
-  this.usageCount += 1;
-  return this.save();
+  // Use atomic operations to prevent race conditions
+  return (this.constructor as any).findByIdAndUpdate(
+    this._id,
+    { 
+      $inc: { usageCount: 1 },
+      $set: { lastUsed: new Date() }
+    },
+    { new: true }
+  );
 };
 
 questionSchema.methods.addTranslation = function(language: Language, text: string) {

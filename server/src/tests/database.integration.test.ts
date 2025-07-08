@@ -150,7 +150,7 @@ describe('Database Integration Tests', () => {
         { tags: ['philosophy'] },
         { page: 1, limit: 10 }
       );
-      testValidation.validatePaginationResponse(philosophyDialogues);
+      testValidation.validatePaginationResponse(philosophyDialogues, 1, 10);
       expect(philosophyDialogues.data.length).toBe(3);
 
       // Test filtering by date range

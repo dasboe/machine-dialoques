@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { IErrorLog, ErrorSeverity, ErrorCategory } from '../types';
+import { IErrorLog } from '../types';
 
 // Main ErrorLog schema
 const errorLogSchema = new Schema<IErrorLog>({

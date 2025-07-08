@@ -75,12 +75,17 @@ export const SAMPLE_AI_RESPONSES: Partial<AIResponse>[] = [
 export const createQuestionFixture = (overrides: Partial<CreateQuestionData> = {}): CreateQuestionData => {
   const randomQuestion = SAMPLE_QUESTIONS[Math.floor(Math.random() * SAMPLE_QUESTIONS.length)]!;
   const randomModel = AI_MODELS[Math.floor(Math.random() * AI_MODELS.length)]!;
+  const timestamp = Date.now();
+  const randomSuffix = Math.random().toString(36).substring(2, 8);
   
   return {
-    text: randomQuestion,
+    text: `${randomQuestion} (${timestamp}-${randomSuffix})`,
     tags: ['philosophy', 'consciousness', 'ai'],
     generatedBy: randomModel,
     language: 'en' as Language,
+    relevanceScore: 0.8,
+    nonHumanCentricWeight: 0.8,
+    originalityScore: 0.8,
     ...overrides
   };
 };
@@ -88,6 +93,8 @@ export const createQuestionFixture = (overrides: Partial<CreateQuestionData> = {
 // Dialogue fixture factory
 export const createDialogueFixture = (overrides: Partial<CreateDialogueData> = {}): CreateDialogueData => {
   const randomQuestion = SAMPLE_QUESTIONS[Math.floor(Math.random() * SAMPLE_QUESTIONS.length)]!;
+  const timestamp = Date.now();
+  const randomSuffix = Math.random().toString(36).substring(2, 8);
   
   // Create simple, well-typed responses
   const responses: AIResponse[] = [
@@ -110,7 +117,7 @@ export const createDialogueFixture = (overrides: Partial<CreateDialogueData> = {
   ];
   
   return {
-    question: randomQuestion,
+    question: `${randomQuestion} (${timestamp}-${randomSuffix})`,
     responses,
     languages: ['en' as Language],
     tags: ['philosophy', 'test'],
@@ -140,12 +147,14 @@ export const createRejectedContentFixture = () => ({
 
 // Multiple fixtures helpers
 export const createMultipleQuestions = (count: number): CreateQuestionData[] => {
-  return Array.from({ length: count }, (_, i) => 
-    createQuestionFixture({ 
-      text: `${SAMPLE_QUESTIONS[i % SAMPLE_QUESTIONS.length]} (Test ${i + 1})`,
+  return Array.from({ length: count }, (_, i) => {
+    const timestamp = Date.now();
+    const randomSuffix = Math.random().toString(36).substring(2, 8);
+    return createQuestionFixture({ 
+      text: `${SAMPLE_QUESTIONS[i % SAMPLE_QUESTIONS.length]} (Test ${i + 1}-${timestamp}-${randomSuffix})`,
       tags: [`tag-${i}`, 'philosophy']
-    })
-  );
+    });
+  });
 };
 
 export const createMultipleDialogues = (count: number): CreateDialogueData[] => {

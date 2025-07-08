@@ -1,27 +1,9 @@
-import { connectToDatabase, disconnectFromDatabase } from '../config/database';
 import { databaseService } from '../services/database.service';
 import { AIModelName } from '../types';
 
 describe('Database Tests', () => {
-  beforeAll(async () => {
-    // Set test environment
-    process.env.NODE_ENV = 'test';
-    process.env.MONGODB_TEST_URI = 'mongodb://localhost:27017/machine-dialogues-test';
-    
-    try {
-      await connectToDatabase();
-    } catch (error) {
-      console.warn('MongoDB not available for testing. Tests will be skipped.');
-    }
-  });
-
-  afterAll(async () => {
-    try {
-      await disconnectFromDatabase();
-    } catch (error) {
-      console.warn('Error disconnecting from test database:', error);
-    }
-  });
+  // Database connection is handled by global setup in setup.ts
+  // No need to connect/disconnect here
 
   describe('Database Connection', () => {
     test('should connect to MongoDB successfully', async () => {
@@ -151,7 +133,7 @@ describe('Database Tests', () => {
       expect(errorLog.error).toBe('Test API timeout error');
       expect(errorLog.severity).toBe('high');
       expect(errorLog.category).toBe('api');
-      expect(errorLog.model).toBe('OpenAI');
+      expect(errorLog.aiModel).toBe('OpenAI');
       expect(errorLog.resolved).toBe(false);
     });
 

@@ -20,6 +20,7 @@ import { RejectedContent } from '../models/RejectedContent';
 import { ErrorLog } from '../models/ErrorLog';
 import { logger } from '../utils/logger';
 import { Types } from 'mongoose';
+import mongoose from 'mongoose';
 
 export class DatabaseService {
   
@@ -110,7 +111,7 @@ export class DatabaseService {
     try {
       const dialogue = await Dialogue.findByIdAndUpdate(
         id,
-        { ...updates, version: { $inc: 1 } },
+        { ...updates, $inc: { version: 1 } },
         { new: true, runValidators: true }
       );
       
@@ -236,8 +237,8 @@ export class DatabaseService {
     try {
       const question = await Question.findById(id);
       if (question) {
-        await question.markAsUsed();
-        return question;
+        const updatedQuestion = await question.markAsUsed();
+        return updatedQuestion;
       }
       return null;
     } catch (error) {
@@ -362,7 +363,7 @@ export class DatabaseService {
         error,
         severity,
         category,
-        model: metadata.model,
+        aiModel: metadata.model,
         endpoint: metadata.endpoint,
         userId: metadata.userId,
         stack: metadata.stack,
@@ -490,8 +491,10 @@ export class DatabaseService {
   }> {
     try {
       // Check database connection
-      const mongoose = await import('mongoose');
-      const isConnected = mongoose.connection.readyState === 1;
+      const readyState = mongoose.connection.readyState;
+      
+      // readyState: 0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
+      const isConnected = readyState === 1;
 
       if (!isConnected) {
         return {

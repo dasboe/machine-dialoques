@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import { connectToDatabase } from './config/database';
 import { logger } from './utils/logger';
 import { databaseService } from './services/database.service';
+import { apiRoutes } from './routes';
 
 // Load environment variables
 dotenv.config();
@@ -18,43 +19,37 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Basic health check endpoint
-app.get('/health', async (req, res) => {
-  try {
-    const dbHealth = await databaseService.healthCheck();
-    
-    res.json({
-      status: 'healthy',
-      timestamp: new Date().toISOString(),
-      database: dbHealth.database,
-      collections: dbHealth.collections,
-      version: '1.0.0'
-    });
-  } catch (error) {
-    logger.error('Health check failed:', error);
-    res.status(500).json({
-      status: 'unhealthy',
-      timestamp: new Date().toISOString(),
-      error: error instanceof Error ? error.message : 'Unknown error'
-    });
-  }
+// Request logging middleware
+app.use((req, _res, next) => {
+  logger.info(`${req.method} ${req.path}`, {
+    ip: req.ip,
+    userAgent: req.get('User-Agent'),
+    query: req.query
+  });
+  next();
 });
 
-// Basic info endpoint
-app.get('/', (req, res) => {
+// API routes
+app.use('/api', apiRoutes);
+
+// Root endpoint
+app.get('/', (_req, res) => {
   res.json({
     name: 'Machine Dialogues API',
     version: '1.0.0',
     description: 'Backend API for generating and managing AI philosophical dialogues',
     endpoints: {
-      health: '/health',
-      docs: '/api-docs (coming soon)'
-    }
+      api: '/api',
+      health: '/api/health',
+      dialogues: '/api/dialogues',
+      questions: '/api/questions'
+    },
+    documentation: 'Coming soon'
   });
 });
 
 // Error handling middleware
-app.use((error: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((error: any, req: express.Request, res: express.Response, _next: express.NextFunction) => {
   logger.error('Unhandled error:', error);
   
   // Log to database if possible
